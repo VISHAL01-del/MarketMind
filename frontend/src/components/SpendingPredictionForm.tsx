@@ -81,13 +81,13 @@ export default function SpendingPredictionForm() {
   }
 
   return (
-    <section>
+    <section className="ml-form-card">
       <h2>Spending prediction</h2>
       <p>
         Enter customer details to estimate total spending.
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-form-grid">
         <label>
           Age
           <input

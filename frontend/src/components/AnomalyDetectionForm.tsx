@@ -82,14 +82,14 @@ export default function AnomalyDetectionForm() {
   }
 
   return (
-    <section>
+    <section className="ml-form-card">
       <h2>Customer anomaly detection</h2>
       <p>
         Use the trained Isolation Forest model to flag unusual
         customer profiles for review.
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-form-grid">
         <label>
           Age
           <input

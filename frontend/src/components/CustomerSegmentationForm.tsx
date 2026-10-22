@@ -77,13 +77,13 @@ export default function CustomerSegmentationForm() {
   }
 
   return (
-    <section>
+    <section className="ml-form-card">
       <h2>Customer segmentation</h2>
       <p>
         Group customer profiles using your trained K-Means model.
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-form-grid">
         <label>
           Total orders
           <input

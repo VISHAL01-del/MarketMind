@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from 'react'
 import './App.css'
 import SpendingChart from './components/SpendingChart'
 import ChurnPredictionForm from './components/ChurnPredictionForm'
@@ -10,6 +11,7 @@ import SimilarCustomersForm from './components/SimilarCustomersForm'
 const features = [
   {
     id: 'churn',
+    target: 'churn-tool',
     number: '01',
     icon: '◉',
     title: 'Churn prediction',
@@ -18,6 +20,7 @@ const features = [
   },
   {
     id: 'spending',
+    target: 'spending-tool',
     number: '02',
     icon: '↗',
     title: 'Spending prediction',
@@ -26,6 +29,7 @@ const features = [
   },
   {
     id: 'insights',
+    target: 'insights-tool',
     number: '03',
     icon: '✧',
     title: 'Customer insights',
@@ -34,6 +38,7 @@ const features = [
   },
   {
     id: 'segments',
+    target: 'segments-tool',
     number: '04',
     icon: '◷',
     title: 'Customer segmentation',
@@ -42,6 +47,7 @@ const features = [
   },
   {
     id: 'anomalies',
+    target: 'anomalies-tool',
     number: '05',
     icon: '⌁',
     title: 'Anomaly detection',
@@ -50,6 +56,7 @@ const features = [
   },
   {
     id: 'similar',
+    target: 'similar-tool',
     number: '06',
     icon: '⇄',
     title: 'Similar customers',
@@ -58,7 +65,34 @@ const features = [
   },
 ]
 
+const navItems = [
+  { target: 'dashboard', icon: '▦', label: 'Overview' },
+  { target: 'churn-tool', icon: '◉', label: 'Churn prediction' },
+  { target: 'spending-tool', icon: '↗', label: 'Spending prediction' },
+  { target: 'insights-tool', icon: '✧', label: 'Customer insights' },
+  { target: 'segments-tool', icon: '◷', label: 'Segmentation' },
+  { target: 'anomalies-tool', icon: '⌁', label: 'Anomaly detection' },
+  { target: 'similar-tool', icon: '⇄', label: 'Similar customers' },
+]
+
 function App() {
+  const [activeSection, setActiveSection] = useState('dashboard')
+
+  useEffect(() => {
+    const sections = navItems
+      .map(({ target }) => document.getElementById(target))
+      .filter((section): section is HTMLElement => section !== null)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries.find((entry) => entry.isIntersecting)
+        if (visibleSection) setActiveSection(visibleSection.target.id)
+      },
+      { rootMargin: '-18% 0px -70% 0px' },
+    )
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="app-layout">
       <aside className="sidebar">
@@ -75,27 +109,16 @@ function App() {
         <p className="nav-label">WORKSPACE</p>
 
         <nav className="navigation">
-          <a href="#dashboard" className="nav-item active">
-            <span>▦</span> Overview
-          </a>
-          <a href="#churn" className="nav-item">
-            <span>◉</span> Churn prediction
-          </a>
-          <a href="#spending" className="nav-item">
-            <span>↗</span> Spending prediction
-          </a>
-          <a href="#insights" className="nav-item">
-            <span>✧</span> Customer insights
-          </a>
-          <a href="#segments" className="nav-item">
-            <span>◷</span> Segmentation
-          </a>
-          <a href="#anomalies" className="nav-item">
-            <span>⌁</span> Anomaly detection
-          </a>
-          <a href="#similar" className="nav-item">
-            <span>⇄</span> Similar customers
-          </a>
+          {navItems.map((item) => (
+            <a
+              href={`#${item.target}`}
+              className={`nav-item ${activeSection === item.target ? 'active' : ''}`}
+              onClick={() => setActiveSection(item.target)}
+              key={item.target}
+            >
+              <span>{item.icon}</span> {item.label}
+            </a>
+          ))}
         </nav>
 
         <div className="sidebar-note">
@@ -245,32 +268,32 @@ function App() {
               <span className="highlight-spark">✦</span>
             </div>
 
-            <div className="highlight-item">
+            <a className="highlight-item" href="#churn-tool">
               <span className="highlight-icon violet">◉</span>
               <div>
                 <strong>Understand churn</strong>
                 <p>Estimate customer churn risk.</p>
               </div>
               <span className="highlight-arrow">↗</span>
-            </div>
+            </a>
 
-            <div className="highlight-item">
+            <a className="highlight-item" href="#segments-tool">
               <span className="highlight-icon green">◷</span>
               <div>
                 <strong>Discover segments</strong>
                 <p>Explore customer group assignments.</p>
               </div>
               <span className="highlight-arrow">↗</span>
-            </div>
+            </a>
 
-            <div className="highlight-item">
+            <a className="highlight-item" href="#anomalies-tool">
               <span className="highlight-icon orange">⌁</span>
               <div>
                 <strong>Review anomalies</strong>
                 <p>Flag unusual profiles for investigation.</p>
               </div>
               <span className="highlight-arrow">↗</span>
-            </div>
+            </a>
           </article>
         </section>
 
@@ -288,7 +311,7 @@ function App() {
           {features.map((feature) => (
             <article
               className="feature-card"
-              id={feature.id}
+              id={`feature-${feature.id}`}
               key={feature.id}
             >
               <div className="feature-card-top">
@@ -300,8 +323,7 @@ function App() {
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
               <a
-                href={`#${feature.id}`}
-                onClick={(event) => event.preventDefault()}
+                href={`#${feature.target}`}
               >
                 Open tool <span>↗</span>
               </a>
@@ -352,7 +374,7 @@ function App() {
 
 <CustomerSegmentationForm />
 
-<section className="section-heading" id="anomalies">
+<section className="section-heading" id="anomalies-tool">
   <div>
     <h2>Anomaly detection</h2>
     <p>
@@ -364,7 +386,7 @@ function App() {
 </section>
 
 <AnomalyDetectionForm />
-<section className="section-heading" id="similar">
+<section className="section-heading" id="similar-tool">
   <div>
     <h2>Similar customers</h2>
     <p>

@@ -86,7 +86,7 @@ function ChurnPredictionForm() {
   }
 
   return (
-    <section className="panel churn-form-panel" id="churn-form">
+    <section className="panel churn-form-panel ml-form-card" id="churn-form">
       <div className="panel-heading">
         <div>
           <h3>Churn prediction</h3>
@@ -94,7 +94,7 @@ function ChurnPredictionForm() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="churn-form">
+      <form onSubmit={handleSubmit} className="churn-form ml-form-grid">
         <label>
           Age
           <input

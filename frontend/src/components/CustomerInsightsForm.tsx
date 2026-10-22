@@ -85,13 +85,13 @@ export default function CustomerInsightsForm() {
   }
 
   return (
-    <section>
+    <section className="ml-form-card">
       <h2>Customer insights</h2>
       <p>
         Analyze engagement risk and predicted churn status.
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-form-grid">
         <label>
           Age
           <input name="age" type="number" min="18" max="100"

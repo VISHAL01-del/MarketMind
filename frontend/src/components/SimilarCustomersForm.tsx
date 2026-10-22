@@ -86,14 +86,14 @@ export default function SimilarCustomersForm() {
   }
 
   return (
-    <section>
+    <section className="ml-form-card">
       <h2>Similar customers</h2>
       <p>
         Find five customer profiles with similar characteristics
         using your trained KNN model.
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-form-grid">
         <label>
           Age
           <input name="age" type="number" min="18" max="100"
